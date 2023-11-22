@@ -19,7 +19,7 @@ export default function PlayScreen({navigation, route}) {
     useFocusEffect(
         React.useCallback(() => {
           async function changeScreenOrientation() {
-            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
           }
        
             changeScreenOrientation();

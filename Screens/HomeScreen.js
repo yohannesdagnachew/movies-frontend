@@ -19,6 +19,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { AntDesign } from "@expo/vector-icons";
 import Loader from "../components/Loader";
+import UpdateModal from "../components/Update";
+
+
+const appVersion = 1.0;
 
 export default function HomeScreen({ navigation }) {
   const [amhricMovies, setAmharicMovies] = useState([]);
@@ -26,10 +30,14 @@ export default function HomeScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
 
   const loadData = async () => {
-    console.log("loading data");
     const data = await getAmharicMovies();
+    const backEndAppVersion = Number(data.appVersion);
+    if (backEndAppVersion > appVersion) {
+      setUpdateVisible(true);
+    }
     setLoading(false);
     let allAmharic = data.data;
     setAmharicMovies(allAmharic);
@@ -39,8 +47,6 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     loadData();
   }, []);
-
-  
 
   useFocusEffect(
     useCallback(() => {
@@ -69,7 +75,6 @@ export default function HomeScreen({ navigation }) {
     return (
       <Pressable
         onPress={() => {
-          console.log(item)
           navigation.navigate("Play", {
             videoId: item.videoId,
           });
@@ -98,38 +103,49 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       {amhricMovies ? (
         <>
-          <Loader visible={loading} />
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => {
-                if (text === "") {
-                  setAmharicMovies(allAmharicMovies);
-                  return;
-                }
-                setSearch(text);
-                searchHandler();
-              }}
+          {updateVisible ? (
+            <UpdateModal
+              visible={updateVisible}
+              setVisible={setUpdateVisible}
             />
-            <AntDesign
-              name="search1"
-              size={24}
-              color="black"
-              onPress={searchHandler}
-            />
-          </View>
+          ) : (
+            <>
+              <Loader visible={loading} />
+              <View style={styles.searchContainer}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => {
+                    if (text === "") {
+                      setAmharicMovies(allAmharicMovies);
+                      return;
+                    }
+                    setSearch(text);
+                    searchHandler();
+                  }}
+                />
+                <AntDesign
+                  name="search1"
+                  size={24}
+                  color="black"
+                  onPress={searchHandler}
+                />
+              </View>
 
-          <View style={{ width: "100%" }}>
-            <FlatList data={amhricMovies} renderItem={list} numColumns={2}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={loadData}
-              />
-            }
-            
-            />
-          </View>
+              <View style={{ width: "100%" }}>
+                <FlatList
+                  data={amhricMovies}
+                  renderItem={list}
+                  numColumns={2}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={loadData}
+                    />
+                  }
+                />
+              </View>
+            </>
+          )}
         </>
       ) : (
         <Text>Loading.....</Text>
