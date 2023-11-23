@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
 import PlayScreen from './Screens/PlayScreen';
 import HomeScreen from './Screens/HomeScreen';
-import KanaScreen from './Screens/KanaScreen'
+import KanaScreen from './Screens/KanaScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';

@@ -24,3 +24,14 @@ export const getUpdateLink = async () => {
       error.response
     }
   }
+
+export const checkIsReady = async () => {
+    try {
+      const response = await axios.get(`${url}/api/isready`);
+      return response
+  
+    }
+    catch(error) {
+      error.response
+    }
+  } 

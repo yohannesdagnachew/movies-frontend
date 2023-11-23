@@ -20,6 +20,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { AntDesign } from "@expo/vector-icons";
 import Loader from "../components/Loader";
 import UpdateModal from "../components/Update";
+import amazonList from '../utils/amzonList';
 
 
 const appVersion = 1.0;
@@ -31,10 +32,16 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
+  const [isReady, setIsReady] = useState(false)
 
   const loadData = async () => {
     const data = await getAmharicMovies();
+    
     const backEndAppVersion = Number(data.appVersion);
+    const isReadyBackEnd = data.isReady;
+    if(isReadyBackEnd === true){
+      setIsReady(true)
+    }
     if (backEndAppVersion > appVersion) {
       setUpdateVisible(true);
     }
@@ -75,9 +82,16 @@ export default function HomeScreen({ navigation }) {
     return (
       <Pressable
         onPress={() => {
+          if(isReady){
           navigation.navigate("Play", {
             videoId: item.videoId,
-          });
+          })
+          return
+         }
+         navigation.navigate("Kana", {
+          videoId: item.videoId,
+          videoRef: null
+        })
         }}
         style={styles.listItem}
       >
@@ -110,7 +124,7 @@ export default function HomeScreen({ navigation }) {
             />
           ) : (
             <>
-              <Loader visible={loading} />
+              {isReady && <Loader visible={loading} />}
               <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.input}
@@ -133,7 +147,7 @@ export default function HomeScreen({ navigation }) {
 
               <View style={{ width: "100%" }}>
                 <FlatList
-                  data={amhricMovies}
+                  data={isReady ? amhricMovies : amazonList}
                   renderItem={list}
                   numColumns={2}
                   refreshControl={
@@ -148,7 +162,7 @@ export default function HomeScreen({ navigation }) {
           )}
         </>
       ) : (
-        <Text>Loading.....</Text>
+        <Text style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>Not Available</Text>
       )}
     </View>
   );

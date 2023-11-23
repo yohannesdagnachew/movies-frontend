@@ -1,52 +1,84 @@
-import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import { View, StyleSheet, Button, Dimensions, BackHandler } from 'react-native';
+import { Video } from 'expo-av';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
-export default function KanaScreen() {
+
+
+export default function KanaScreen({navigation, route}) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+  const [isPlaying, setIsPlaying] = useState(true);
+  const isFocused = useIsFocused();
+
+
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
+  
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+        headerShown: false,
+    })
+}, [])
+
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function changeScreenOrientation() {
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
+      }
+   
+        changeScreenOrientation();
+    }, [])
+  );
+
+ 
+  useEffect(() => {
+    if (!isFocused) {
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+    }
+  }, [isFocused]);
+
+
+
+
   return (
     <View style={styles.container}>
       <Video
+        shouldPlay={isPlaying}
+        isMuted={false}
         ref={video}
-        style={styles.video}
+        style={{ width: width, height: height }}
         source={{
-          uri: 'https://ddqjsgzws0wyh.cloudfront.net/agew.mp4',
+          uri: `https://ddqjsgzws0wyh.cloudfront.net/${route.params.videoId}`,
         }}
         useNativeControls
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
+        resizeMode="contain"
         onPlaybackStatusUpdate={status => setStatus(() => status)}
       />
-      <View style={styles.buttons}>
-        <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-          }
-        />
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      video: {
-        alignSelf: 'center',
-        width: 400,
-        height: 400,
-      },
-      buttons: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-
-}); 
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'black',
+  },
+  video: {
+    alignSelf: 'center',
+    backgroundColor: 'black',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
