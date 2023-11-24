@@ -6,6 +6,7 @@ import KanaScreen from './Screens/KanaScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';
+import 'expo-dev-client';
 
 
 const Drawer = createDrawerNavigator();

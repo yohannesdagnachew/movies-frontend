@@ -11,11 +11,6 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function PlayScreen({navigation, route}) {
 
-   
-    
-
-
-
     useFocusEffect(
         React.useCallback(() => {
           async function changeScreenOrientation() {

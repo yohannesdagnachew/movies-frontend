@@ -20,10 +20,24 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { AntDesign } from "@expo/vector-icons";
 import Loader from "../components/Loader";
 import UpdateModal from "../components/Update";
-import amazonList from '../utils/amzonList';
+import amazonList from "../utils/amzonList";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+  useInterstitialAd
+} from "react-native-google-mobile-ads";
 
 
 const appVersion = 1.0;
+const adUnitId = __DEV__
+  ? TestIds.BANNER
+  : "ca-app-pub-8956332832407416/1107739550";
+
+const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8956332832407416/7920559916';
+
+
+
 
 export default function HomeScreen({ navigation }) {
   const [amhricMovies, setAmharicMovies] = useState([]);
@@ -32,15 +46,19 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
-  const [isReady, setIsReady] = useState(false)
+  const [isReady, setIsReady] = useState(false);
+  const [runAds, setRunAds] = useState(0)
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(interstitialAdUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+  });
 
+  
   const loadData = async () => {
     const data = await getAmharicMovies();
-    
     const backEndAppVersion = Number(data.appVersion);
     const isReadyBackEnd = data.isReady;
-    if(isReadyBackEnd === true){
-      setIsReady(true)
+    if (isReadyBackEnd === true) {
+      setIsReady(true);
     }
     if (backEndAppVersion > appVersion) {
       setUpdateVisible(true);
@@ -82,16 +100,17 @@ export default function HomeScreen({ navigation }) {
     return (
       <Pressable
         onPress={() => {
-          if(isReady){
-          navigation.navigate("Play", {
+          setRunAds(runAds + 1)
+          if (isReady) {
+            navigation.navigate("Play", {
+              videoId: item.videoId,
+            });
+            return;
+          }
+          navigation.navigate("Kana", {
             videoId: item.videoId,
-          })
-          return
-         }
-         navigation.navigate("Kana", {
-          videoId: item.videoId,
-          videoRef: null
-        })
+            videoRef: null,
+          });
         }}
         style={styles.listItem}
       >
@@ -115,6 +134,16 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.bannerAds}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
+
       {amhricMovies ? (
         <>
           {updateVisible ? (
@@ -162,7 +191,11 @@ export default function HomeScreen({ navigation }) {
           )}
         </>
       ) : (
-        <Text style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>Not Available</Text>
+        <Text
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          Not Available
+        </Text>
       )}
     </View>
   );
@@ -195,4 +228,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
   },
+  bannerAds: {
+    position: 'absolute',
+    zIndex: 1,
+    marginTop: '164%'
+  }
 });
