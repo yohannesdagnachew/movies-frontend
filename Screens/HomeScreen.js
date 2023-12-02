@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(true);
   const [runAds, setRunAds] = useState(0)
   const { isLoaded, isClosed, load, show } = useInterstitialAd(interstitialAdUnitId, {
     requestNonPersonalizedAdsOnly: true,

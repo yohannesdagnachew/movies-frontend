@@ -56,7 +56,7 @@ export default function KanaScreen({navigation, route}) {
         ref={video}
         style={{ width: width, height: height }}
         source={{
-          uri: `https://ddqjsgzws0wyh.cloudfront.net/${route.params.videoId}`,
+          uri: `https://amharic-movies.s3.eu-west-3.amazonaws.com/${route.params.videoId}`,
         }}
         useNativeControls
         resizeMode="contain"
