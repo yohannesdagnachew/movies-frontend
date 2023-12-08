@@ -13,6 +13,7 @@ import {
   Pressable,
   TextInput,
   RefreshControl,
+  ImageBackground,
 } from "react-native";
 import { getAmharicMovies } from "../Api/http";
 import { useFocusEffect } from "@react-navigation/native";
@@ -27,6 +28,7 @@ import {
   TestIds,
   useInterstitialAd
 } from "react-native-google-mobile-ads";
+import {useIsFocused} from '@react-navigation/native'
 
 
 const appVersion = 1.0;
@@ -40,26 +42,25 @@ const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-895633
 
 
 export default function HomeScreen({ navigation }) {
+  const isFocused = useIsFocused();
   const [amhricMovies, setAmharicMovies] = useState([]);
   const [allAmharicMovies, setAllAmharicMovies] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
-  const [isReady, setIsReady] = useState(true);
+  const [isReady, setIsReady] = useState(false);
   const [runAds, setRunAds] = useState(0)
   const { isLoaded, isClosed, load, show } = useInterstitialAd(interstitialAdUnitId, {
     requestNonPersonalizedAdsOnly: true,
   });
 
+
   
   const loadData = async () => {
     const data = await getAmharicMovies();
     const backEndAppVersion = Number(data.appVersion);
-    const isReadyBackEnd = data.isReady;
-    if (isReadyBackEnd === true) {
-      setIsReady(true);
-    }
+    setIsReady(data.isReady);
     if (backEndAppVersion > appVersion) {
       setUpdateVisible(true);
     }
@@ -85,14 +86,19 @@ export default function HomeScreen({ navigation }) {
     }, [])
   );
 
+
+
+
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "Amharic Movies",
+      headerTitle: "ቃና ቲቪ",
       headerTitleAlign: "center",
       headerStyle: {
-        backgroundColor: "#2098AE",
+        backgroundColor: "#95087C",
       },
-      headerTintColor: "#000",
+      headerTintColor: "#fff",
     });
   }, []);
 
@@ -102,8 +108,10 @@ export default function HomeScreen({ navigation }) {
         onPress={() => {
           setRunAds(runAds + 1)
           if (isReady) {
-            navigation.navigate("Play", {
-              videoId: item.videoId,
+            navigation.navigate("KanaDitails", {
+              title: item.amTitle,
+              image: item.thumbnail,
+              runAds: false
             });
             return;
           }
@@ -114,24 +122,21 @@ export default function HomeScreen({ navigation }) {
         }}
         style={styles.listItem}
       >
-        <Image
-          source={{ uri: item.thumbnail }}
-          style={{ width: "100%", height: 170, borderRadius: 8 }}
-        />
+        <ImageBackground 
+        source={{ uri: item.thumbnail }}
+        style= {styles.ImageBackground}
+        imageStyle={{ borderRadius: 10}}
+        resizeMode="cover"
+        >
+          <View>
+          <Text style={styles.text}>{item.amTitle}</Text>
+          </View>
+        </ImageBackground>
       </Pressable>
     );
   };
 
-  const searchHandler = () => {
-    const filteredMovies = allAmharicMovies.filter((movie) => {
-      return (
-        movie.engTitle.toLowerCase().includes(search.toLowerCase()) ||
-        movie.amhTitle.includes(search)
-      );
-    });
-    setAmharicMovies(filteredMovies);
-  };
-
+ 
   return (
     <View style={styles.container}>
       <View style={styles.bannerAds}>
@@ -154,26 +159,6 @@ export default function HomeScreen({ navigation }) {
           ) : (
             <>
               {isReady && <Loader visible={loading} />}
-              <View style={styles.searchContainer}>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => {
-                    if (text === "") {
-                      setAmharicMovies(allAmharicMovies);
-                      return;
-                    }
-                    setSearch(text);
-                    searchHandler();
-                  }}
-                />
-                <AntDesign
-                  name="search1"
-                  size={24}
-                  color="black"
-                  onPress={searchHandler}
-                />
-              </View>
-
               <View style={{ width: "100%" }}>
                 <FlatList
                   data={isReady ? amhricMovies : amazonList}
@@ -232,5 +217,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     marginTop: '164%'
+  },
+  text: {
+    color: 'white',
+    fontSize: 20,
+    lineHeight: 40,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: 'black',
+  },
+  ImageBackground: {
+    width: "100%",
+    height: 170,
+    borderRadius: 50,
+    flex: 1,
+    justifyContent: "flex-end",
   }
 });

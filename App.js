@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import PlayScreen from './Screens/PlayScreen';
 import HomeScreen from './Screens/HomeScreen';
 import KanaScreen from './Screens/KanaScreen';
+import KanaDitailsScreen from './Screens/KanaDitailsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';
@@ -19,7 +20,7 @@ export default function App() {
       <NavigationContainer>
          <Drawer.Navigator
          screenOptions = {{
-          drawerActiveBackgroundColor: "#2098AE",
+          drawerActiveBackgroundColor: "#95087C",
           drawerActiveTintColor: "#fff",
          }}
          >
@@ -29,7 +30,17 @@ export default function App() {
               drawerItemStyle: { height: 0, display: "none" },
             }}
           />
-          <Drawer.Screen name="Kana" component={KanaScreen} />
+          <Drawer.Screen name="KanaDitails" component={KanaDitailsScreen}
+          options={{
+            drawerItemStyle: { height: 0, display: "none" },
+          }}
+          />
+
+          <Drawer.Screen name="Kana" component={KanaScreen}
+          options={{
+            drawerItemStyle: { height: 0, display: "none" },
+          }}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
       

@@ -1,15 +1,21 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, BackHandler } from 'react-native'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Dimensions } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function PlayScreen({navigation, route}) {
+
+  const { videoId, image, title } = route.params
+  const [adsCounter, setAdsCounter] = useState(0)
+  const  isFocused  = useIsFocused();
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -27,7 +33,33 @@ export default function PlayScreen({navigation, route}) {
         })
     }, [])
 
-  
+    useEffect(() => {
+      if (!isFocused) {
+        return;
+      }
+      setAdsCounter(adsCounter + 1)
+      const onBackPress = () => {
+        navigation.navigate("KanaDitails", {
+          title: title,
+          image: image,
+          runAds: adsCounter % 2 === 0 ? true : false
+        })
+        return true;
+      };
+   
+      BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+   
+      return () =>
+        BackHandler.removeEventListener(
+          'hardwareBackPress',
+          onBackPress
+        );
+    }
+    , [isFocused])
+
 
     return (
         <View style={{
