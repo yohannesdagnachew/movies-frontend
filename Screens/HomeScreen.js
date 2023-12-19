@@ -57,8 +57,8 @@ export default function HomeScreen({ navigation }) {
     const data = await getAmharicMovies();
     const backEndAppVersion = Number(data.appVersion);
     const isReadyBackEnd = data.isReady;
-    if (isReadyBackEnd === true) {
-      setIsReady(true);
+    if (isReadyBackEnd != undefined) {
+      setIsReady(isReadyBackEnd);
     }
     if (backEndAppVersion > appVersion) {
       setUpdateVisible(true);
@@ -134,7 +134,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bannerAds}>
+      {/* <View style={styles.bannerAds}>
         <BannerAd
           unitId={adUnitId}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
@@ -142,7 +142,7 @@ export default function HomeScreen({ navigation }) {
             requestNonPersonalizedAdsOnly: true,
           }}
         />
-      </View>
+      </View> */}
 
       {amhricMovies ? (
         <>
@@ -174,7 +174,7 @@ export default function HomeScreen({ navigation }) {
                 />
               </View>
 
-              <View style={{ width: "100%" }}>
+              <View style={{ width: "100%"}}>
                 <FlatList
                   data={isReady ? amhricMovies : amazonList}
                   renderItem={list}
@@ -231,6 +231,6 @@ const styles = StyleSheet.create({
   bannerAds: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: '164%'
+    bottom: 0,
   }
 });

@@ -29,7 +29,13 @@ export default function App() {
               drawerItemStyle: { height: 0, display: "none" },
             }}
           />
-          <Drawer.Screen name="Kana" component={KanaScreen} />
+          <Drawer.Screen name="Kana" component={KanaScreen} 
+          
+          options={{
+            drawerItemStyle: { height: 0, display: "none" },
+          }}
+
+          />
         </Drawer.Navigator>
       </NavigationContainer>
       
