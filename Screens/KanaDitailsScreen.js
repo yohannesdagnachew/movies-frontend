@@ -24,7 +24,7 @@ import Loader from "../components/Loader";
 const appVersion = 1.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
-  : "ca-app-pub-8956332832407416/1107739550";
+  : "ca-app-pub-8956332832407416/4514630935";
 
 const interstitialAdUnitId = __DEV__
   ? TestIds.INTERSTITIAL
@@ -130,7 +130,7 @@ export default function KanaDitailsScreen({ navigation, route }) {
                   : { backgroundColor: "black" },
               ]}
             >
-              ክፍል {item.part}
+              Part {item.part}
             </Text>
           </View>
         </ImageBackground>
@@ -150,7 +150,7 @@ export default function KanaDitailsScreen({ navigation, route }) {
         />
       </View>
       <Loader visible={loading} />
-      <View style={{ width: "100%" }}>
+      <View style={{ width: "100%", bottom: 70, marginTop: 70 }}>
         <FlatList data={kanamovies} renderItem={list} numColumns={2} />
       </View>
     </View>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   bannerAds: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: '164%'
+    bottom: 0,
   },
 
 });

@@ -14,6 +14,7 @@ import {
   TextInput,
   RefreshControl,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import { getAmharicMovies } from "../Api/http";
 import { useFocusEffect } from "@react-navigation/native";
@@ -34,11 +35,12 @@ import {useIsFocused} from '@react-navigation/native'
 const appVersion = 1.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
-  : "ca-app-pub-8956332832407416/1107739550";
+  : "ca-app-pub-8956332832407416/1938716289";
 
 const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8956332832407416/7920559916';
 
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 
 export default function HomeScreen({ navigation }) {
@@ -93,7 +95,7 @@ export default function HomeScreen({ navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "ቃና ቲቪ",
+      headerTitle: "Kana Tv",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: "#95087C",
@@ -129,7 +131,7 @@ export default function HomeScreen({ navigation }) {
         resizeMode="cover"
         >
           <View>
-          <Text style={styles.text}>{item.amTitle}</Text>
+          <Text style={styles.text}>{item.enTitle}</Text>
           </View>
         </ImageBackground>
       </Pressable>
@@ -159,7 +161,7 @@ export default function HomeScreen({ navigation }) {
           ) : (
             <>
               {isReady && <Loader visible={loading} />}
-              <View style={{ width: "100%" }}>
+              <View style={{ width: "100%", bottom: 70, marginTop: 70 }}>
                 <FlatList
                   data={isReady ? amhricMovies : amazonList}
                   renderItem={list}
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
   bannerAds: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: '164%'
+    bottom: 0
   },
   text: {
     color: 'white',
