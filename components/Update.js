@@ -3,7 +3,6 @@ import {
   useWindowDimensions,
   View,
   Text,
-  ActivityIndicator,
   StyleSheet,
   Alert,
 } from "react-native";

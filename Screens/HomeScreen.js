@@ -27,19 +27,22 @@ import {
   TestIds,
   useInterstitialAd
 } from "react-native-google-mobile-ads";
+import { useIsFocused } from "@react-navigation/native";
 
 
-const appVersion = 1.0;
+
+const appVersion = 2.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
-  : "ca-app-pub-8956332832407416/1107739550";
+  : "ca-app-pub-8956332832407416/6809768546";
 
-const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8956332832407416/7920559916';
+const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8956332832407416/8698878364';
 
 
 
 
 export default function HomeScreen({ navigation }) {
+  const isFocused = useIsFocused();
   const [amhricMovies, setAmharicMovies] = useState([]);
   const [allAmharicMovies, setAllAmharicMovies] = useState([]);
   const [search, setSearch] = useState("");
@@ -52,6 +55,19 @@ export default function HomeScreen({ navigation }) {
     requestNonPersonalizedAdsOnly: true,
   });
 
+
+
+  useEffect(() => {
+    if(isFocused){
+      load()
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (isLoaded && isFocused) {
+      show()
+    }
+  }, [isLoaded]);
   
   const loadData = async () => {
     const data = await getAmharicMovies();
@@ -134,7 +150,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.bannerAds}>
+      <View style={styles.bannerAds}>
         <BannerAd
           unitId={adUnitId}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
@@ -142,7 +158,7 @@ export default function HomeScreen({ navigation }) {
             requestNonPersonalizedAdsOnly: true,
           }}
         />
-      </View> */}
+      </View>
 
       {amhricMovies ? (
         <>
@@ -174,7 +190,7 @@ export default function HomeScreen({ navigation }) {
                 />
               </View>
 
-              <View style={{ width: "100%"}}>
+              <View style={{ width: "100%", bottom: 180, marginTop: 180}}>
                 <FlatList
                   data={isReady ? amhricMovies : amazonList}
                   renderItem={list}
