@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const url = 'http://10.0.2.2:5001'
-// const url = 'https://cloudy-turtleneck-shirt-bull.cyclic.app'
+// const url = 'http://10.0.2.2:5001'
+const url = 'https://cloudy-turtleneck-shirt-bull.cyclic.app'
 
 
 export const getAmharicMovies = async () => {

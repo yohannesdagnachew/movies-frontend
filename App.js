@@ -12,6 +12,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 
 const Drawer = createDrawerNavigator();
@@ -60,19 +61,19 @@ export default function App() {
         alert('Must use physical device for Push Notifications');
       }
   
-      // if(token){  
-      //   const url = "https://cloudy-turtleneck-shirt-bull.cyclic.app/api/notification";
-      //   try {
-      //     const response = await axios.post(url, {
-      //       token: token.data
-      //     });
-      //   } catch (error) {
-      //     console.error('Failed to send push token:');
-      //   }
-      // }
+      if(token){  
+        const url = "https://cloudy-turtleneck-shirt-bull.cyclic.app/api/kana/notification";
+        try {
+          const response = await axios.post(url, {
+            token: token.data
+          });
+        } catch (error) {
+          console.error('Failed to send push token:');
+        }
+      }
       console.log(token.data)
     
-      return token.data;
+      return token
     }
 
      registerForPushNotificationsAsync()
