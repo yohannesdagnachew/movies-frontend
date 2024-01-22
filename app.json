@@ -18,12 +18,13 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.amharicmovies.drama"
+      "package": "com.kanachewata.drama"
     },
     "web": {
       "favicon": "./assets/favicon.png"

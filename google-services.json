@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "61058787810",
+    "project_id": "kana-5bedd",
+    "storage_bucket": "kana-5bedd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61058787810:android:ce2fcc0085b17422a331bb",
+        "android_client_info": {
+          "package_name": "com.kanachewata.drama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4OwA2-D32fZShtEq39C0Izo5zDkyQaBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
