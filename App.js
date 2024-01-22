@@ -71,8 +71,6 @@ export default function App() {
           console.error('Failed to send push token:');
         }
       }
-      console.log(token.data)
-    
       return token
     }
 

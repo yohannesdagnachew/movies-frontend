@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react'
-import { View, Text, BackHandler } from 'react-native'
+import { View, Text, BackHandler, Alert } from 'react-native'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Dimensions } from "react-native";
@@ -73,6 +73,9 @@ export default function PlayScreen({navigation, route}) {
         height={SCREEN_WIDTH}
         width={SCREEN_HEIGHT}
         play={true}
+        onError={() => {
+          Alert.alert('Error', 'Please check your connection')
+        }}
         webViewProps={{
           injectedJavaScript: `
             var element = document.getElementsByClassName('container')[0];
