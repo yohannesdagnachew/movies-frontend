@@ -109,7 +109,7 @@ export default function HomeScreen({ navigation }) {
       <Pressable
         onPress={() => {
           setRunAds(runAds + 1)
-          if (isReady) {
+          if (item.videoId === undefined) {
             navigation.navigate("KanaDitails", {
               title: item.amTitle,
               image: item.thumbnail,
@@ -163,7 +163,7 @@ export default function HomeScreen({ navigation }) {
               {isReady && <Loader visible={loading} />}
               <View style={{ width: "100%", bottom: 70, marginTop: 70 }}>
                 <FlatList
-                  data={isReady ? amhricMovies : amazonList}
+                  data={amhricMovies}
                   renderItem={list}
                   numColumns={2}
                   refreshControl={
