@@ -32,7 +32,7 @@ import {
 import {useIsFocused} from '@react-navigation/native'
 
 
-const appVersion = 1.0;
+const appVersion = 2.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
   : "ca-app-pub-8956332832407416/1938716289";
