@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "992662841823",
+    "project_id": "amharic-movies-526ae",
+    "storage_bucket": "amharic-movies-526ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992662841823:android:34a4e581365fc1d2e07c6a",
+        "android_client_info": {
+          "package_name": "com.amharicmovies.drama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC3-zGFv95llBWtLcCfSoxl22_Z2yclbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
