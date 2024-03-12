@@ -30,9 +30,10 @@ import {
   useInterstitialAd
 } from "react-native-google-mobile-ads";
 import {useIsFocused} from '@react-navigation/native'
+import * as Linking from 'expo-linking';
 
 
-const appVersion = 3.0;
+const appVersion = 4.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
   : "ca-app-pub-8956332832407416/1938716289";
@@ -108,6 +109,10 @@ export default function HomeScreen({ navigation }) {
     return (
       <Pressable
         onPress={() => {
+          if(item.enTitle === "Telegram"){
+            Linking.openURL('https://t.me/kana_app');
+            return
+          }
           setRunAds(runAds + 1)
           if (item.videoId === undefined) {
             navigation.navigate("KanaDitails", {

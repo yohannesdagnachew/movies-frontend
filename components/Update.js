@@ -14,15 +14,13 @@ import { getUpdateLink } from '../Api/http'
 
 export default function UpdateModal({ visible }) {
   const { width, height } = useWindowDimensions();
-  const [updateLink, setUpdateLink] = useState();
   const updateHandler = async() => {
     const response = await getUpdateLink();
     if(response.status === 200) {
-      setUpdateLink(response.data.updateLink);
-      Linking.openURL(updateLink)
+      Linking.openURL(response.data.updateLink)
     }
     else {
-      Alert.alert("Error", "Something went wrong", [{ text: "Ok" }]);
+      Linking.openURL('https://play.google.com/store/apps/details?id=com.kanachewata.drama')
     }
   };
 

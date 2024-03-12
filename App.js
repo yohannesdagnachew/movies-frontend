@@ -62,7 +62,7 @@ export default function App() {
       }
   
       if(token){  
-        const url = "https://cloudy-turtleneck-shirt-bull.cyclic.app/api/kana/notification";
+        const url = "https://kana.tv.ethiochewata.com/api/kana/notification";
         try {
           const response = await axios.post(url, {
             token: token.data

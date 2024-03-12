@@ -1,17 +1,20 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import { View, StyleSheet, Button, Dimensions, BackHandler } from 'react-native';
-import { Video } from 'expo-av';
+import { View, StyleSheet, Button, Dimensions, BackHandler, ActivityIndicator } from 'react-native';
+import { Video, ResizeMode } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
+import { useKeepAwake } from 'expo-keep-awake';
 
 
 
 export default function KanaScreen({navigation, route}) {
+  useKeepAwake();
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const [isPlaying, setIsPlaying] = useState(true);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(true);
 
 
   const width = Dimensions.get('window').width;
@@ -50,8 +53,10 @@ export default function KanaScreen({navigation, route}) {
 
   return (
     <View style={styles.container}>
+      {loading && <ActivityIndicator size="large" color="#00ff00"  style={styles.activity} />}
       <Video
         shouldPlay={isPlaying}
+        resizeMode={ResizeMode.STRETCH}
         isMuted={false}
         ref={video}
         style={{ width: width, height: height }}
@@ -59,8 +64,13 @@ export default function KanaScreen({navigation, route}) {
           uri: route.params.videoId,
         }}
         useNativeControls
-        resizeMode="contain"
         onPlaybackStatusUpdate={status => setStatus(() => status)}
+        onLoadStart={() => {
+          setLoading(true);
+        }}
+        onLoad={() => {
+          setLoading(false);
+        }}
       />
     </View>
   );
@@ -81,4 +91,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  activity: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
 });

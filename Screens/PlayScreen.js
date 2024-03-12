@@ -42,7 +42,7 @@ export default function PlayScreen({navigation, route}) {
         navigation.navigate("KanaDitails", {
           title: title,
           image: image,
-          runAds: adsCounter % 2 === 0 ? true : false
+          runAds: adsCounter % 1 === 0 ? true : false
         })
         return true;
       };

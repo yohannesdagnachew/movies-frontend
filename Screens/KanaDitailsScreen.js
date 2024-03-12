@@ -104,6 +104,13 @@ export default function KanaDitailsScreen({ navigation, route }) {
     return (
       <Pressable
         onPress={() => {
+          if(item.level === 2){
+            navigation.navigate("Kana", {
+              videoId: item.videoId,
+              videoRef: null,
+            });
+            return;
+          }
           setCurrentPart(item.part);
           setCurrentTitle(title);
           navigation.navigate("Play", {
