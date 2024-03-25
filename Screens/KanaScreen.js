@@ -15,6 +15,10 @@ export default function KanaScreen({navigation, route}) {
   const [isPlaying, setIsPlaying] = useState(true);
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
+  const { videoId, image, title } = route.params
+  const [adsCounter, setAdsCounter] = useState(0)
+
+  
 
 
   const width = Dimensions.get('window').width;
@@ -47,6 +51,33 @@ export default function KanaScreen({navigation, route}) {
       setIsPlaying(true);
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
+    setAdsCounter(adsCounter + 1)
+    const onBackPress = () => {
+      navigation.navigate("KanaDitails", {
+        title: title,
+        image: image,
+        runAds: adsCounter % 1 === 0 ? true : false
+      })
+      return true;
+    };
+ 
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      onBackPress
+    );
+ 
+    return () =>
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+  }
+  , [isFocused])
 
 
 

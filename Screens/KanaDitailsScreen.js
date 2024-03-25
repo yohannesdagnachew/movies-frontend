@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   ImageBackground,
+  BackHandler,
 } from "react-native";
 import { getKana } from "../Api/http";
 import {
@@ -93,7 +94,6 @@ export default function KanaDitailsScreen({ navigation, route }) {
   );
   
 
-
   const list = ({ item }) => {
     let isClicked = false;
     if (currentPart === item.part && currentTitle === title) {
@@ -105,9 +105,13 @@ export default function KanaDitailsScreen({ navigation, route }) {
       <Pressable
         onPress={() => {
           if(item.level === 2){
+            setCurrentPart(item.part);
+            setCurrentTitle(title);
             navigation.navigate("Kana", {
               videoId: item.videoId,
               videoRef: null,
+              title: title,
+              image: image,
             });
             return;
           }
