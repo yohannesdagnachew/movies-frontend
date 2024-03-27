@@ -15,6 +15,8 @@ import {
   BannerAdSize,
   TestIds,
   useInterstitialAd,
+  InterstitialAd,
+  AdEventType,
 } from "react-native-google-mobile-ads";
 import { useIsFocused } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -25,11 +27,15 @@ import Loader from "../components/Loader";
 const appVersion = 1.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
-  : "ca-app-pub-8956332832407416/4514630935";
+  : "ca-app-pub-8562038685299408/8240951432";
 
 const interstitialAdUnitId = __DEV__
   ? TestIds.INTERSTITIAL
-  : "ca-app-pub-8956332832407416/7920559916";
+  : "ca-app-pub-8562038685299408/1273052554";
+
+  const interstitial = InterstitialAd.createForAdRequest(interstitialAdUnitId, {
+    keywords: ['fashion', 'clothing'],
+  }); 
 
 export default function KanaDitailsScreen({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -37,6 +43,7 @@ export default function KanaDitailsScreen({ navigation, route }) {
   const [currentPart, setCurrentPart] = useState(0);
   const [currentTitle, setCurrentTitle] = useState(route.params.title);
   const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
   const { isLoaded, isClosed, load, show } = useInterstitialAd(
     interstitialAdUnitId,
     {
@@ -68,16 +75,31 @@ export default function KanaDitailsScreen({ navigation, route }) {
 
 
   useEffect(() => {
-    if(isFocused && runAds){
-      load()
+    setLoading(true);
+    const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      setLoaded(true);
+    });
+
+    // Start loading the interstitial straight away
+    interstitial.load();
+
+    // Unsubscribe from events on unmount
+    return unsubscribe;
+  }, [isFocused]);
+
+
+  useEffect(() => {
+    if(loaded && isFocused){
+      interstitial.show();
+      setLoaded(false);
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    if (isLoaded) {
-      show()
-    }
-  }, [isLoaded]);
+  // useEffect(() => {
+  //   if (isLoaded) {
+  //     show()
+  //   }
+  // }, [isLoaded]);
 
 
   useFocusEffect(
@@ -112,6 +134,7 @@ export default function KanaDitailsScreen({ navigation, route }) {
               videoRef: null,
               title: title,
               image: image,
+              demo: false,
             });
             return;
           }

@@ -6,7 +6,7 @@ const url = 'https://kana.tv.ethiochewata.com'
 
 export const getAmharicMovies = async () => {
     try{
-    const response = await axios.get(`${url}/api/kanaMoviesList?app_v=4.0`)
+    const response = await axios.get(`${url}/api/kanaMoviesList?app_v=5.0`)
     return response.data
     }
     catch(error){
@@ -41,6 +41,16 @@ export const getKana = async (title) => {
       const response = await axios.get(`${url}/api/kanaMovies?name=${title}`);
       return response
   
+    }
+    catch(error) {
+      error.response
+    }
+  }
+
+  export const updateView = async (title) => {
+    try {
+      const response = await axios.get(`${url}/api/kana/updateViews?title=${title}`);
+      return response
     }
     catch(error) {
       error.response

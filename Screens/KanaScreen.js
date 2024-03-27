@@ -15,7 +15,7 @@ export default function KanaScreen({navigation, route}) {
   const [isPlaying, setIsPlaying] = useState(true);
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
-  const { videoId, image, title } = route.params
+  const { videoId, image, title, demo } = route.params
   const [adsCounter, setAdsCounter] = useState(0)
 
   
@@ -30,7 +30,6 @@ export default function KanaScreen({navigation, route}) {
         headerShown: false,
     })
 }, [])
-
 
 
   useFocusEffect(
@@ -58,6 +57,12 @@ export default function KanaScreen({navigation, route}) {
     }
     setAdsCounter(adsCounter + 1)
     const onBackPress = () => {
+      if(demo || demo === undefined) {
+        navigation.navigate("Home", {
+          runAds: adsCounter % 1 === 0 ? true : false
+        })
+        return true;
+      }
       navigation.navigate("KanaDitails", {
         title: title,
         image: image,

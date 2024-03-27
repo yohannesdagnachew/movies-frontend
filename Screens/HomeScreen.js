@@ -16,7 +16,7 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
-import { getAmharicMovies } from "../Api/http";
+import { getAmharicMovies, updateView } from "../Api/http";
 import { useFocusEffect } from "@react-navigation/native";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { AntDesign } from "@expo/vector-icons";
@@ -33,10 +33,10 @@ import {useIsFocused} from '@react-navigation/native'
 import * as Linking from 'expo-linking';
 
 
-const appVersion = 4.0;
+const appVersion = 5.0;
 const adUnitId = __DEV__
   ? TestIds.BANNER
-  : "ca-app-pub-8956332832407416/1938716289";
+  : "ca-app-pub-8562038685299408/5720414081";
 
 const interstitialAdUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8956332832407416/7920559916';
 
@@ -113,18 +113,20 @@ export default function HomeScreen({ navigation }) {
             Linking.openURL('https://t.me/kana_app');
             return
           }
+          updateView(item.amTitle)
           setRunAds(runAds + 1)
           if (item.videoId === undefined) {
             navigation.navigate("KanaDitails", {
               title: item.amTitle,
               image: item.thumbnail,
-              runAds: false
+              runAds: false,
             });
             return;
           }
           navigation.navigate("Kana", {
             videoId: item.videoId,
             videoRef: null,
+            demo: true,
           });
         }}
         style={styles.listItem}
